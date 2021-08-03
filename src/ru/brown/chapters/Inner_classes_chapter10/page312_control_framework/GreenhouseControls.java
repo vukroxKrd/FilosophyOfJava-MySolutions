@@ -111,12 +111,19 @@ public class GreenhouseControls extends Controller {
         }
     }
 
+    //Task from the book:
+    /* В программу GreenhouseControls.java добавьте внутренние классы для события Event, отключающие и включающие проветривание оранжереи.
+    Настройте программу GreenhouseContraller.java на использование нового типа события.*/
+
     // Принадлежит внешнему классу
     private boolean ventilation = false;
 
     static abstract class Equipment {
+
         String mechanism;
 
+        //Когда писал этот метод, то хотел переиспользовать его в наследниках, но когда я запускаю этот метод в GreenhouseController, в ссылке на объект вылетает null.
+        //Я попытался решить эту проблему переопределив этот метод в наследнике, но это не решило моей проблемы... по прежнему null (в консоли: "null don't work")
         public void performTask(boolean needWork) {
             if (needWork == true) {
                 System.out.println(mechanism + " work");
@@ -141,13 +148,18 @@ public class GreenhouseControls extends Controller {
             }
             return instance;
         }
-        //Можно ли сделать так, чтобы использовать performTask из родителя, не перезаписывая его использовать синглтон вентилятора?
+
+        //Можно ли сделать так, чтобы использовать performTask из родителя?
         @Override
         public void performTask(boolean needWork) {
-            super.performTask(needWork);
+            if (needWork == true) {
+                System.out.println(mechanism + " work");
+            } else {
+                System.out.println(mechanism + " don't work");
+            }
         }
     }
-
+    //что то не так с генератором случайных чисел, потому что в консоли вентилятор всегде не работает. Видимо этот способо не генерит отрицательные числа.
     public int temperature = ThreadLocalRandom.current().nextInt(-50, 60 + 1);
 
     public class VentilationOff extends Event {
@@ -173,6 +185,7 @@ public class GreenhouseControls extends Controller {
     }
 
     public class VentilationOn extends Event {
+        Ventilator ventilator = Ventilator.getVentilator();
 
         public VentilationOn(long delayTime) {
             super(delayTime);
@@ -181,7 +194,7 @@ public class GreenhouseControls extends Controller {
         @Override
         public void action() {
             if (temperature >= 20) {
-                new Ventilator().performTask(true);
+                ventilator.performTask(true);
             } else {
                 return;
             }
