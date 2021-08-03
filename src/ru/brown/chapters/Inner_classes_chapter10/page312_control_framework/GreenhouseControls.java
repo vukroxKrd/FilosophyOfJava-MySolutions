@@ -124,6 +124,7 @@ public class GreenhouseControls extends Controller {
 
         //Когда писал этот метод, то хотел переиспользовать его в наследниках, но когда я запускаю этот метод в GreenhouseController, в ссылке на объект вылетает null.
         //Я попытался решить эту проблему переопределив этот метод в наследнике, но это не решило моей проблемы... по прежнему null (в консоли: "null don't work")
+
         public void performTask(boolean needWork) {
             if (needWork == true) {
                 System.out.println(mechanism + " work");
