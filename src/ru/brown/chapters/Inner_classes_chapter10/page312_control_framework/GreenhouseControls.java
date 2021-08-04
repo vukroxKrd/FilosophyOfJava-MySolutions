@@ -161,7 +161,7 @@ public class GreenhouseControls extends Controller {
         }
     }
     //что то не так с генератором случайных чисел, потому что в консоли вентилятор всегде не работает. Видимо этот способо не генерит отрицательные числа.
-    public int temperature = ThreadLocalRandom.current().nextInt(-50, 60 + 1);
+    public int temperature;
 
     public class VentilationOff extends Event {
         Ventilator ventilator = Ventilator.getVentilator();
@@ -172,6 +172,7 @@ public class GreenhouseControls extends Controller {
 
         @Override
         public void action() {
+            temperature = ThreadLocalRandom.current().nextInt(-50, 60 + 1);
             //Как выполнить этот мето из статического контента?
             if (temperature <= 19) {
                 ventilator.performTask(ventilation);
@@ -194,6 +195,7 @@ public class GreenhouseControls extends Controller {
 
         @Override
         public void action() {
+            temperature = ThreadLocalRandom.current().nextInt(-50, 60 + 1);
             if (temperature >= 20) {
                 ventilator.performTask(true);
             } else {
