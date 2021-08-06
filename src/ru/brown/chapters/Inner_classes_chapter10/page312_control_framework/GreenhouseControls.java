@@ -116,16 +116,23 @@ public class GreenhouseControls extends Controller {
     Настройте программу GreenhouseContraller.java на использование нового типа события.*/
 
     // Принадлежит внешнему классу
-    private boolean ventilation = false;
+    private static boolean ventilation = false;
 
     static abstract class Equipment {
 
-        String mechanism;
+//        String mechanism;
 
+//        public String getMechanism() {
+//            return mechanism;
+//        }
+//
+//        public void setMechanism(String mechanism) {
+//            this.mechanism = mechanism;
+//        }
         //Когда писал этот метод, то хотел переиспользовать его в наследниках, но когда я запускаю этот метод в GreenhouseController, в ссылке на объект вылетает null.
         //Я попытался решить эту проблему переопределив этот метод в наследнике, но это не решило моей проблемы... по прежнему null (в консоли: "null don't work")
 
-        public void performTask(boolean needWork) {
+        public void performTask(boolean needWork, String mechanism) {
             if (needWork == true) {
                 System.out.println(mechanism + " work");
             } else {
@@ -137,10 +144,10 @@ public class GreenhouseControls extends Controller {
     public static final class Ventilator extends Equipment {
 
         private static Ventilator instance;
-        public String mechanism;
+        public static final String MECHANISM_NAME = "Ventilator";
 
         private Ventilator() {
-            this.mechanism = "ventilator";
+//            setMechanism("ventilator");
         }
 
         public static Ventilator getVentilator() {
@@ -151,14 +158,14 @@ public class GreenhouseControls extends Controller {
         }
 
         //Можно ли сделать так, чтобы использовать performTask из родителя?
-        @Override
-        public void performTask(boolean needWork) {
-            if (needWork == true) {
-                System.out.println(mechanism + " work");
-            } else {
-                System.out.println(mechanism + " don't work");
-            }
-        }
+//        @Override
+//        public void performTask(boolean needWork) {
+//            if (needWork == true) {
+//                System.out.println(mechanism + " work");
+//            } else {
+//                System.out.println(mechanism + " don't work");
+//            }
+//        }
     }
     //что то не так с генератором случайных чисел, потому что в консоли вентилятор всегде не работает. Видимо этот способо не генерит отрицательные числа.
     public int temperature;
@@ -175,7 +182,7 @@ public class GreenhouseControls extends Controller {
             temperature = ThreadLocalRandom.current().nextInt(-50, 60 + 1);
             //Как выполнить этот мето из статического контента?
             if (temperature <= 19) {
-                ventilator.performTask(ventilation);
+                ventilator.performTask(ventilation, Ventilator.MECHANISM_NAME);
             } else {
                 return;
             }
@@ -197,7 +204,7 @@ public class GreenhouseControls extends Controller {
         public void action() {
             temperature = ThreadLocalRandom.current().nextInt(-50, 60 + 1);
             if (temperature >= 20) {
-                ventilator.performTask(true);
+                ventilator.performTask(true, Ventilator.MECHANISM_NAME);
             } else {
                 return;
             }

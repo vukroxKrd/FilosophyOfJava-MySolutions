@@ -1,8 +1,10 @@
 package ru.brown.chapters.Inner_classes_chapter10.page291inner_to_outer_access;
 
+import java.util.ArrayList;
+
 public class Sequence {
 
-    private Object[] items;
+    private ArrayList<Object> items;
     private int next = 0;
 
     public Selector selector() {
@@ -11,12 +13,11 @@ public class Sequence {
 
     public void test() { System.out.println("Sequence.test()"); }
     public Sequence(int size) {
-        items = new Object[size];
+        items = new ArrayList<>(size);
     }
 
     public void add(Object x) {
-        if (next < items.length)
-            items[next++] = x;
+            items.add(x);
     }
     private class SequenceSelector implements Selector {
 
@@ -33,15 +34,15 @@ public class Sequence {
         }
 
         public boolean end() {
-            return i == items.length;
+            return i == items.size();
         }
 
         public Object current() {
-            return items[i];
+            return items.get(i);
         }
 
         public void next() {
-            if (i < items.length) i++;
+            if (i < items.size()) i++;
         }
     }
 
