@@ -1,6 +1,7 @@
 package ru.brown.chapters.Inner_classes_chapter10.page291inner_to_outer_access;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Sequence {
 
@@ -15,10 +16,10 @@ public class Sequence {
     public Sequence(int size) {
         items = new ArrayList<>(size);
     }
-
     public void add(Object x) {
             items.add(x);
     }
+
     private class SequenceSelector implements Selector {
 
         private int i = 0;
@@ -36,11 +37,9 @@ public class Sequence {
         public boolean end() {
             return i == items.size();
         }
-
         public Object current() {
             return items.get(i);
         }
-
         public void next() {
             if (i < items.size()) i++;
         }

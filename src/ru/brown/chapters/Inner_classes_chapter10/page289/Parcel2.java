@@ -1,4 +1,4 @@
-package ru.brown.chapters.inner_classes.page289;
+package ru.brown.chapters.Inner_classes_chapter10.page289;
 
 public class Parcel2 {
 
